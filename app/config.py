@@ -8,7 +8,7 @@ DOTENV = os.path.join(os.path.dirname(__file__), "..", ".env")
 
 class Settings(BaseSettings):
     database_url: str = Field(
-        default="sqlite:///../data/app.db",
+        default="sqlite:///./data/app.db",
         description="Database URL"
     )
 

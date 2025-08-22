@@ -1,15 +1,15 @@
-name: 'Saber Task Dev API'
+name: saber-task-dev-api
 
 services:
   app:
+    container_name: task-service
     build: .
     ports:
       - "8000:8000"
     environment:
       - DATABASE_URL=${DATABASE_URL}
-      - DEBUG=true
-      - LOG_LEVEL=DEBUG
     volumes:
       - ./data:/app/data
       - ./app:/app/app
+      - ./.env:/app/.env
     command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

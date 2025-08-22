@@ -107,15 +107,3 @@ def read_root():
         "docs_url": "/docs" if settings.debug else "disabled",
         "api_prefix": settings.api_v1_str
     }
-
-
-if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run(
-        "app.main:app",
-        host=settings.host,
-        port=settings.port,
-        reload=settings.debug,
-        log_level=settings.log_level.lower()
-    )
