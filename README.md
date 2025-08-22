@@ -38,7 +38,7 @@ app/
 
 ```bash
 # Clone and setup
-git clone <repository>
+git clone [<repository>](https://github.com/cetech1001/saber-task-api.git)
 cd saber-task-api
 
 # Copy environment template
