@@ -102,9 +102,8 @@ PYTHONPATH=. pytest
 # Run with coverage
 PYTHONPATH=. pytest --cov=app --cov-report=html
 
-# Run specific test (categories)
-PYTHONPATH=. pytest tests/conftest.py          # Configuration test only
-PYTHONPATH=. pytest tests/test_health.py          # Health test only
+# Run specific test categories
+PYTHONPATH=. pytest tests/unit/          # Unit tests only
 PYTHONPATH=. pytest tests/integration/   # Integration tests only
 ```
 

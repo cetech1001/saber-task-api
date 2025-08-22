@@ -29,9 +29,11 @@ def test_db(test_engine):
         yield session
     finally:
         session.close()
-        # Clean up tables after each test
-        for table in reversed(Base.metadata.sorted_tables):
-            test_engine.execute(table.delete())
+
+        with test_engine.connect() as connection:
+            for table in reversed(Base.metadata.sorted_tables):
+                connection.execute(table.delete())
+            connection.commit()
 
 
 @pytest.fixture(scope="function")

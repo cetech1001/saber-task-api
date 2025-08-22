@@ -25,7 +25,7 @@ class TestTasksAPI:
         assert "updated_at" in data
 
     def test_create_task_validation_error(self, client: TestClient):
-        # Missing required title
+        # Missing the required title
         task_data = {
             "description": "Test Description",
             "priority": 1
@@ -71,19 +71,23 @@ class TestTasksAPI:
 
     def test_list_tasks_with_filters(self, client: TestClient):
         # Create test tasks
-        completed_task = {
+        completed_task_data = {
             "title": "Completed Task",
-            "priority": 1,
-            "completed": True
+            "priority": 1
         }
-        pending_task = {
+        pending_task_data = {
             "title": "Pending Task",
-            "priority": 2,
-            "completed": False
+            "priority": 2
         }
 
-        client.post("/api/v1/tasks/", json=completed_task)
-        client.post("/api/v1/tasks/", json=pending_task)
+        # Create tasks first
+        completed_response = client.post("/api/v1/tasks/", json=completed_task_data)
+        pending_response = client.post("/api/v1/tasks/", json=pending_task_data)
+
+        completed_task_id = completed_response.json()["id"]
+
+        # Update the first task to be completed
+        client.put(f"/api/v1/tasks/{completed_task_id}/", json={"completed": True})
 
         # Filter by completed=True
         response = client.get("/api/v1/tasks/?completed=true")
@@ -155,15 +159,22 @@ class TestTasksAPI:
 
     def test_task_summary(self, client: TestClient):
         # Create test tasks
-        tasks = [
-            {"title": "High Priority", "priority": 1, "completed": False},
-            {"title": "Completed Task", "priority": 2, "completed": True},
-            {"title": "Overdue Task", "priority": 3, "completed": False,
-             "due_date": (datetime.now() - timedelta(days=1)).isoformat()},
-        ]
+        task1_data = {"title": "High Priority", "priority": 1}
+        task2_data = {"title": "Medium Priority", "priority": 2}
+        task3_data = {
+            "title": "Overdue Task",
+            "priority": 3,
+            "due_date": (datetime.now() - timedelta(days=1)).isoformat()
+        }
 
-        for task in tasks:
-            client.post("/api/v1/tasks/", json=task)
+        # Create the tasks
+        task1_response = client.post("/api/v1/tasks/", json=task1_data)
+        task2_response = client.post("/api/v1/tasks/", json=task2_data)
+        task3_response = client.post("/api/v1/tasks/", json=task3_data)
+
+        # Mark one task as completed
+        task2_id = task2_response.json()["id"]
+        client.put(f"/api/v1/tasks/{task2_id}/", json={"completed": True})
 
         response = client.get("/api/v1/tasks/summary")
         assert response.status_code == 200

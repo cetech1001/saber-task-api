@@ -32,7 +32,7 @@ def health_check(db: Session = Depends(get_db)):
         # Test database connectivity
         db.execute(text("SELECT 1"))
 
-        current_time = datetime.utcnow()
+        current_time = datetime.now()
         uptime = time.time() - startup_time
 
         logger.info("Health check successful", extra={
