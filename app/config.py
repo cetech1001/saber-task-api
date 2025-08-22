@@ -1,6 +1,6 @@
 from functools import lru_cache
 from pydantic_settings import BaseSettings
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class Settings(BaseSettings):
@@ -25,6 +25,15 @@ class Settings(BaseSettings):
 
     default_page_size: int = Field(default=10, description="Default page size")
     max_page_size: int = Field(default=50, description="Maximum page size")
+
+    allowed_hosts: list[str] = Field(default=["*"], description="Allowed hosts")
+
+    @field_validator('allowed_hosts', mode='before')
+    @classmethod
+    def parse_hosts(cls, v):
+        if isinstance(v, str):
+            return [host.strip() for host in v.split(',')]
+        return v
 
     class Config:
         env_file = ".env"
