@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 
 from app.database import get_db
-from app.schemas.base import HealthResponse
+from app.schemas.base import HealthResponse, ReadinessCheckResponse
 from app.config import settings
 from app.logging_config import get_logger
 
@@ -57,7 +57,7 @@ def health_check(db: Session = Depends(get_db)):
         )
 
 
-@router.get("/readiness")
+@router.get("/readiness", response_model=ReadinessCheckResponse)
 def readiness_check(db: Session = Depends(get_db)):
     """Kubernetes-style readiness probe."""
     try:
@@ -68,7 +68,7 @@ def readiness_check(db: Session = Depends(get_db)):
         return {"status": "not ready", "error": str(e)}
 
 
-@router.get("/liveness")
+@router.get("/liveness", response_model=ReadinessCheckResponse)
 def liveness_check():
     """Kubernetes-style liveness probe."""
     return {"status": "alive"}

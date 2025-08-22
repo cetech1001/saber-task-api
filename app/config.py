@@ -1,7 +1,7 @@
 import os
 from functools import lru_cache
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import Field, field_validator
+from pydantic import Field
 
 
 DOTENV = os.path.join(os.path.dirname(__file__), "..", ".env")

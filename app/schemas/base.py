@@ -36,3 +36,6 @@ class HealthResponse(BaseModel):
     timestamp: datetime
     version: str
     uptime_seconds: Optional[float] = None
+
+class ReadinessCheckResponse(BaseModel):
+    status: str
