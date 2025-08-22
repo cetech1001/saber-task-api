@@ -25,9 +25,11 @@ app/
 ├── crud/                 # Database operations
 ├── models/               # SQLAlchemy models
 ├── schemas/              # Pydantic models
-├── core/                 # Core utilities
-├── config.py            # Environment configuration
-└── main.py              # FastAPI application
+├── config.py             # Environment configuration
+├── database.py           # Database connection and session management
+├── exceptions.py         # Exception handlers
+├── logging_config.py     # Logging configuration
+└── main.py               # FastAPI application
 ```
 
 ## 🚀 Quick Start
@@ -144,7 +146,7 @@ docker compose up --build
 ### Development with Docker Compose
 ```bash
 # Start with hot reload
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+docker-compose -f docker-compose-dev.yml up
 
 # View logs
 docker-compose logs -f app
