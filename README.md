@@ -1,4 +1,4 @@
-# Saber Task API (Production-Ready FastAPI)
+# Saber Task API
 
 A robust, production-ready task management API built with FastAPI, SQLAlchemy, and comprehensive testing. Features include CRUD operations, filtering, pagination, search, health checks, and structured logging.
 
