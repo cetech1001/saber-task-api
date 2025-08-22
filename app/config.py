@@ -1,11 +1,14 @@
+import os
 from functools import lru_cache
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field, field_validator
 
 
+DOTENV = os.path.join(os.path.dirname(__file__), "..", ".env")
+
 class Settings(BaseSettings):
     database_url: str = Field(
-        default="sqlite:///./data/app.db",
+        default="sqlite:///../data/app.db",
         description="Database URL"
     )
 
@@ -13,7 +16,7 @@ class Settings(BaseSettings):
     log_level: str = Field(default="INFO", description="Logging level")
     api_v1_str: str = Field(default="/api/v1", description="API v1 prefix")
 
-    host: str = Field(default="0.0.0.0", description="Host to bind")
+    host: str = Field(default="localhost", description="Host to bind")
     port: int = Field(default=8000, description="Port to bind")
 
     title: str = Field(default="Saber Task API", description="API title")
@@ -23,21 +26,16 @@ class Settings(BaseSettings):
         description="API description"
     )
 
-    default_page_size: int = Field(default=10, description="Default page size")
-    max_page_size: int = Field(default=50, description="Maximum page size")
+    default_page_size: int = Field(default=1, description="Default page size")
+    max_page_size: int = Field(default=1, description="Maximum page size")
 
-    allowed_hosts: list[str] = Field(default=["*"], description="Allowed hosts")
+    allowed_hosts_str: str = Field(default="*", description="Allowed hosts (comma-separated)")
 
-    @field_validator('allowed_hosts', mode='before')
-    @classmethod
-    def parse_hosts(cls, v):
-        if isinstance(v, str):
-            return [host.strip() for host in v.split(',')]
-        return v
+    @property
+    def allowed_hosts(self) -> list[str]:
+        return [host.strip() for host in self.allowed_hosts_str.split(',')]
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = False
+    model_config = SettingsConfigDict(env_file=DOTENV, case_sensitive=False)
 
 
 @lru_cache()

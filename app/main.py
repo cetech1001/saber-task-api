@@ -97,7 +97,7 @@ async def log_requests(request: Request, call_next):
 app.include_router(api_router, prefix=settings.api_v1_str)
 
 
-@app.get("/", tags=["root"])
+@app.get("/", tags=["Root"])
 def read_root():
     """Root endpoint with API information."""
     return {
