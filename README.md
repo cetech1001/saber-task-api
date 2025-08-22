@@ -97,18 +97,15 @@ MAX_PAGE_SIZE=50
 
 ```bash
 # Run all tests
-pytest
+PYTHONPATH=. pytest
 
 # Run with coverage
-pytest --cov=app --cov-report=html
+PYTHONPATH=. pytest --cov=app --cov-report=html
 
 # Run specific test (categories)
-pytest tests/conftest.py          # Configuration test only
-pytest tests/test_health.py          # Health test only
-pytest tests/integration/   # Integration tests only
-
-# Run in Docker
-docker-compose exec app pytest
+PYTHONPATH=. pytest tests/conftest.py          # Configuration test only
+PYTHONPATH=. pytest tests/test_health.py          # Health test only
+PYTHONPATH=. pytest tests/integration/   # Integration tests only
 ```
 
 ## 📋 API Endpoints
@@ -123,8 +120,8 @@ docker-compose exec app pytest
 
 ### Health
 - `GET /api/v1/health` - Health check with database connectivity
-- `GET /api/v1/health/readiness` - Kubernetes readiness probe
-- `GET /api/v1/health/liveness` - Kubernetes liveness probe
+- `GET /api/v1/health/readiness` - Kubernetes-style readiness probe
+- `GET /api/v1/health/liveness` - Kubernetes-style liveness probe
 
 ### Query Parameters (GET /tasks/)
 - `completed` (bool) - Filter by completion status
@@ -139,6 +136,10 @@ docker-compose exec app pytest
 ```bash
 docker build -t saber-task-api .
 docker run -p 8000:8000 -e DATABASE_URL=sqlite:///./data/app.db saber-task-api
+
+OR
+
+docker compose up --build
 ```
 
 ### Development with Docker Compose
@@ -148,9 +149,6 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 
 # View logs
 docker-compose logs -f app
-
-# Run tests in container
-docker-compose exec app pytest
 ```
 
 ## 🔍 Monitoring & Logging
@@ -159,24 +157,6 @@ docker-compose exec app pytest
 - **Health Checks**: Multiple endpoints for different monitoring needs
 - **Metrics**: Built-in request timing and status code tracking
 - **Error Handling**: Comprehensive exception handling with proper HTTP status codes
-
-## 🚦 Development Workflow
-
-```bash
-# Setup pre-commit hooks (optional)
-pre-commit install
-
-# Code formatting
-black app tests
-isort app tests
-
-# Linting
-flake8 app tests
-mypy app
-
-# Testing with coverage
-pytest --cov=app --cov-report=term-missing
-```
 
 ## 📈 Performance Features
 
@@ -228,4 +208,4 @@ curl "http://localhost:8000/api/v1/health"
 - **Maintainability**: Well-organized code with consistent patterns
 - **Production Ready**: Logging, monitoring, and deployment configurations included
 
-Built with ❤️ using FastAPI, SQLAlchemy, and modern Python best practices.
+Built using FastAPI, SQLAlchemy, and modern Python best practices.
