@@ -39,3 +39,10 @@ class HealthResponse(BaseModel):
 
 class ReadinessCheckResponse(BaseModel):
     status: str
+
+class RootResponse(BaseModel):
+    name: str
+    version: str
+    status: str
+    docs_url: str
+    api_prefix: str

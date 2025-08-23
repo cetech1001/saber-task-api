@@ -10,6 +10,7 @@ from app.database import create_tables
 from app.logging_config import setup_logging, get_logger
 from app.api.v1.api import api_router
 from app.exceptions import BaseAppException, create_http_exception_from_app_exception
+from app.schemas.base import RootResponse
 
 setup_logging()
 logger = get_logger("main")
@@ -97,7 +98,7 @@ async def log_requests(request: Request, call_next):
 app.include_router(api_router, prefix=settings.api_v1_str)
 
 
-@app.get("/", tags=["Root"])
+@app.get("/", response_model=RootResponse, tags=["Root"])
 def read_root():
     """Root endpoint with API information."""
     return {
