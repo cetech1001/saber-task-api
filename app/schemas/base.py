@@ -45,4 +45,5 @@ class RootResponse(BaseModel):
     version: str
     status: str
     docs_url: str
+    redoc_url: str
     api_prefix: str

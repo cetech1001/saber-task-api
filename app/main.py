@@ -106,5 +106,6 @@ def read_root():
         "version": settings.version,
         "status": "running",
         "docs_url": "/docs" if settings.debug else "disabled",
+        "redoc_url": "/redoc" if settings.debug else "disabled",
         "api_prefix": settings.api_v1_str
     }
